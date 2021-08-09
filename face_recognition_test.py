@@ -3,10 +3,12 @@ from face_recognition import load_image_file, face_encodings
 import cv2
 import numpy as np
 import os
+from glob import glob
 
 
 # 인식하고 싶은 사람의 이미지 로드
-img_paths = ["images/jinho.png"]
+#img_paths = ["images/jinho.png"]
+img_paths = glob("images/*.png")
 
 # 얼굴 인코딩, 이름 저장
 known_face_encodings = []
@@ -18,8 +20,8 @@ for img_path in img_paths:
     known_face_encodings.append(face_encoding)
     file_name = os.path.split(img_path)[-1][:-4]
     known_face_names.append(file_name)
-    
-    
+
+
 # 노트북: 웹켐, 라즈베리파이: 카메라
 cam = cv2.VideoCapture(0)
 
@@ -56,8 +58,8 @@ while True:
             name = "Unknown"
             face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
             best_match_index = np.argmin(face_distances)
-            
-            # 얼굴 인식 O 
+
+            # 얼굴 인식 O
             if matches[best_match_index]:
                 name = known_face_names[best_match_index]
 
